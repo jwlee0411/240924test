@@ -114,6 +114,15 @@ while current_page <= last_page:
         except Exception as e:
             print(f"게시물 크롤링 중 오류 발생: {post_url} - {e}")
 
+        # 블로그 메인 페이지의 HTML을 로컬에 저장하고, 링크를 수정
+        blog_content = soup
+        for idx, link in enumerate(blog_content.find_all('a', href=True)):
+            if "PostView.naver" in link['href']:
+                link_final = sanitize_filename(link.get_text(strip=True))
+                link_final = remove_after_year(link_final)
+        
+                link['href'] = f"blog_posts/{link_final}  네이버 블로그.html"  # 로컬 파일 경로로 변경
+
     # 다음 페이지로 이동
     current_page += 1
 
@@ -191,6 +200,14 @@ if pagination_div:
                 link['href'] = f"local_pages/page_{page_number}.html"
     print("페이지네이션 링크를 로컬 파일로 변경했습니다.")
 
+# 블로그 메인 페이지의 HTML을 로컬에 저장하고, 링크를 수정
+for idx, link in enumerate(blog_content.find_all('a', href=True)):
+    if "PostView.naver" in link['href']:
+        link_final = sanitize_filename(link.get_text(strip=True))
+        link_final = remove_after_year(link_final)
+        
+        link['href'] = f"blog_posts/{link_final}  네이버 블로그.html"  # 로컬 파일 경로로 변경
+
 # 변경된 HTML을 저장
 with open("blog_content_with_pagination.html", "w", encoding="utf-8") as file:
     file.write(str(blog_content))
@@ -199,6 +216,14 @@ print("블로그 메인 페이지가 페이지네이션 링크와 함께 로컬�
 
 
 
+# 블로그 메인 페이지의 HTML을 로컬에 저장하고, 링크를 수정
+blog_content = soup
+for idx, link in enumerate(blog_content.find_all('a', href=True)):
+    if "PostView.naver" in link['href']:
+        link_final = sanitize_filename(link.get_text(strip=True))
+        link_final = remove_after_year(link_final)
+        
+        link['href'] = f"blog_posts/{link_final}  네이버 블로그.html"  # 로컬 파일 경로로 변경
 
 
 
